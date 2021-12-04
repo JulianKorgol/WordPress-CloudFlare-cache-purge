@@ -11,3 +11,8 @@
  */
 
 include_once('scripts/menu.php');
+include_once('scripts/menu-removecache.php');
+
+function wccp_remove_cache() {
+    // Here API CODE
+}

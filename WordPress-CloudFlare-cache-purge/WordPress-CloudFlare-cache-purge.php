@@ -10,5 +10,4 @@
  * License URI: https://github.com/JulianKorgol/WordPress-CloudFlare-cache-purge/blob/main/LICENSE
  */
 
-
-?>
+include_once('scripts/menu.php');

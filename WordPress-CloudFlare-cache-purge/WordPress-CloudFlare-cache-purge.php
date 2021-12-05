@@ -14,5 +14,8 @@ include_once('scripts/menu.php');
 include_once('scripts/menu-removecache.php');
 
 function wccp_remove_cache() {
-    // Here API CODE
+    $email = get_option('wccpCloudflareEmail');
+    $authKey = get_option('wccpCloudflareAuthKey');
+    $zone = get_option('wccpCloudflareZone');
+    shell_exec('curl -X POST "https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache" -H "X-Auth-Email: '.$email.'" -H "X-Auth-Key: '.$authKey.'" -H "Content-Type: application/json" --data {"purge_everything":true}');
 }

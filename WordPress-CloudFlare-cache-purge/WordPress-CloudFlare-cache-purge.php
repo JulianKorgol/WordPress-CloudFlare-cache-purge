@@ -14,16 +14,15 @@ include_once('scripts/menu.php');
 include_once('scripts/menu-removecache.php');
 
 function wccp_remove_cache() {
-    $email = get_option('wccpCloudflareEmail');
     $authKey = get_option('wccpCloudflareAuthKey');
     $zone = get_option('wccpCloudflareZone');
-    $json =  shell_exec('curl -X POST "https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache" -H "X-Auth-Email: '.$email.'" -H "X-Auth-Key: '.$authKey.'" -H "Content-Type: application/json" --data '."'".'{"purge_everything":true}'."'");
+    $json =  shell_exec('curl -X POST "https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache" -H "Authorization: Bearer '.$authKey.'" -H "Content-Type: application/json" --data '."'".'{"purge_everything":true}'."'");
     $obj = json_decode($json);
-    if($obj->success){
-        return $obj;
+    $msg = new stdClass();
+    if($obj->success==true){
+        $msg->success = true;
     }
     else{
-        $msg = new stdClass();
         $msg->success = false;
         $errStr = "";
         foreach($obj->errors as $err){
@@ -31,6 +30,6 @@ function wccp_remove_cache() {
             $errStr .= $errStr;
         }
         $msg->errorStr = $errStr;
-        return $msg;
     }
+    return $msg;
 }

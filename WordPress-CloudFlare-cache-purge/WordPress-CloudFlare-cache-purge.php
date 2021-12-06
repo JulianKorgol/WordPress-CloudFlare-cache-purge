@@ -16,7 +16,11 @@ include_once('scripts/menu-removecache.php');
 function wccp_remove_cache() {
     $authKey = get_option('wccpCloudflareAuthKey');
     $zone = get_option('wccpCloudflareZone');
-    $json =  shell_exec('curl -X POST "https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache" -H "Authorization: Bearer '.$authKey.'" -H "Content-Type: application/json" --data '."'".'{"purge_everything":true}'."'");
+    $ch = curl_init('https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache');
+    $headers = ['Authorization: Bearer '.$authKey,'Content-Type: application/json'];
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "'".'{"purge_everything":true}'."'");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $json = curl_exec();
     $obj = json_decode($json);
     $msg = new stdClass();
     if($obj->success==true){

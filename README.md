@@ -4,7 +4,7 @@ This WordPress plugin allow you to purge CloudFlare cache using CloudFlare API.
 
 ## Prerequisites**
 ** for 1.0 version
-- PHP module: cURL
+- cURL module
 - WordPress (5.8.2 tests pass)
 
 Example of PHP cURL module installation on Debian:

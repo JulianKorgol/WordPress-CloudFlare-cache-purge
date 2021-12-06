@@ -16,6 +16,7 @@ service php7.4-fpm restart
 
 ## Plans for future
 - Give access to purge cache page to administration users, not only admins.
+- Automatic updates
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

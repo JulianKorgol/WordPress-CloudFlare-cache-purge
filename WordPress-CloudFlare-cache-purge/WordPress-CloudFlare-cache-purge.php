@@ -14,9 +14,20 @@ include_once('scripts/menu.php');
 include_once('scripts/menu-removecache.php');
 
 function wccp_remove_cache() {
+    $extensions = get_loaded_extensions();
+    if(!in_array('curl',$extensions)){
+        die("<div class='notice notice-error'><b>You need to install php-curl!</b></div>");
+    }
     $authKey = get_option('wccpCloudflareAuthKey');
     $zone = get_option('wccpCloudflareZone');
-    $json =  shell_exec('curl -X POST "https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache" -H "Authorization: Bearer '.$authKey.'" -H "Content-Type: application/json" --data '."'".'{"purge_everything":true}'."'");
+    $ch = curl_init();
+    $headers = ['Authorization: Bearer '.$authKey,'Content-Type: application/json'];
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "'".'{"purge_everything":true}'."'");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $json = curl_exec($ch);
+    curl_close($ch);
     $obj = json_decode($json);
     $msg = new stdClass();
     if($obj->success==true){

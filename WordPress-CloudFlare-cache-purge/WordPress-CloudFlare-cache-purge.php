@@ -14,6 +14,10 @@ include_once('scripts/menu.php');
 include_once('scripts/menu-removecache.php');
 
 function wccp_remove_cache() {
+    $extensions = get_loaded_extensions();
+    if(!in_array('curl',$extensions)){
+        die("<div class='notice notice-error'><b>You need to install php-curl!</b></div>");
+    }
     $authKey = get_option('wccpCloudflareAuthKey');
     $zone = get_option('wccpCloudflareZone');
     $ch = curl_init('https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache');

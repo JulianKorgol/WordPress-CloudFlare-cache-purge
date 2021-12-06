@@ -20,11 +20,14 @@ function wccp_remove_cache() {
     }
     $authKey = get_option('wccpCloudflareAuthKey');
     $zone = get_option('wccpCloudflareZone');
-    $ch = curl_init('https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache');
+    $ch = curl_init();
     $headers = ['Authorization: Bearer '.$authKey,'Content-Type: application/json'];
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache');
     curl_setopt($ch, CURLOPT_POSTFIELDS, "'".'{"purge_everything":true}'."'");
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    $json = curl_exec();
+    $json = curl_exec($ch);
+    curl_close($ch);
     $obj = json_decode($json);
     $msg = new stdClass();
     if($obj->success==true){

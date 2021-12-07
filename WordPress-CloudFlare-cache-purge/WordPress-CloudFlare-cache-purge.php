@@ -23,6 +23,7 @@ function wccp_remove_cache() {
     $ch = curl_init();
     $headers = ['Authorization: Bearer '.$authKey,'Content-Type: application/json'];
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/'.$zone.'/purge_cache');
     curl_setopt($ch, CURLOPT_POSTFIELDS, "'".'{"purge_everything":true}'."'");
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
